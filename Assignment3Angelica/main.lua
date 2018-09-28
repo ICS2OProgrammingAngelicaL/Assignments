@@ -6,41 +6,70 @@
 -----------------------------------------------------------------------------------------
 
 -- Create my local variables
-local triangleHalfW = display.contentWidth * 0.2
-local triangleHalfH = display.contentHeight * 0.2
+
+--Triangle
 local verticesT = { -250,100, -50,100, -150,-80}
-local triangle = display.newPolygon( triangleHalfW, triangleHalfH, verticesT )
---
-local halfW = display.contentWidth * 0.7
-local halfH = display.contentHeight * 0.2
-local vertices = { -250,100, -50,100, -175,-80, }
-local rhombus = display.newPolygon( halfW, halfH, vertices )
-
---local rhombus = display.newPolygon( rhombusHalfW, rhombusHalfH, verticesR )
---local verticesR = { -300,300, -10,300, -160,10, -20,-80}
---local rhombusHalfW = display.contentWidth * 0.2
---local rhombusHalfH = display.contentWidth * 0.3
-
+local triangle = display.newPolygon( 124, 100, verticesT )
+local textObjectTriangle
+local gradientTri = {
+    type="gradient",
+    color1={ 102/255, 255/255, 102/255 }, 
+    color2={ 204/255, 255/255, 204/255 }, 
+    direction="down"
+}
+--Trapezoid
+local verticesTz = { -250,100, -100,100, -150,-25, -200,-25}
+local trapezoid = display.newPolygon( 800, 355, verticesTz )
+local textObjectTz
+local gradientTz = {
+    type="gradient",
+    color1={ 102/255, 178/255, 255/255 }, 
+    color2={ 204/255, 229/255, 255/255 }, 
+    direction="down"
+}
+-- Octagon
+local verticesOcta = { -50,75, 50,75, 90,25, 90,-25, 50,-75, -50,-75, -90,-25, -90,25}
+local octa = display.newPolygon( 124, 600, verticesOcta )
+local textObjectOcta
+local gradientOcta = {
+    type="gradient",
+    color1={ 178/255, 102/255, 255/255 }, 
+    color2={ 229/255, 204/255, 255/255 }, 
+    direction="down"
+}
+----------------------------------------------------------------------------------------
 -- Sets the background colour of the screen
-display.setDefault("background", 1, 0, 0)
+display.setDefault("background",102/255, 0/255, 0/255)
 
 -- To remove status bar
 display.setStatusBar(display.HiddenStatusBar)
 
--- sets fill colour of Triangle
-triangle:setFillColor(0, 1, 0)
+-- Sets fill colour of Triangle
+triangle:setFillColor(gradientTri)
 
 -- Triangle Border
-triangle.strokeWidth = 10
-triangle:setStrokeColor( 0 )
+triangle.strokeWidth = 3
+triangle:setStrokeColor( 1 )
 
--- Rhombus Fill
-rhombus:setFillColor(0)
+-- Sets the fill colour of the trapezoid
+trapezoid:setFillColor(gradientTz)
 
--- local rhombus = display.newPolygon( rhombusHalfW, rhombusHalfH, verticesR )
--- local verticesR = { -300,300, -10,300, -160,10, 0,1}
--- local rhombusHalfW = display.contentWidth * 0.5
--- local rhombusHalfH = display.contentWidth * 0.5
+-- Trapezoid border
+trapezoid.strokeWidth = 3
+trapezoid:setStrokeColor(1)
 
--- triangleHalfW, triangleHalfH, 
--- 27,-35, 105,-35, 43,16, 65,90, 0,45, -65,90, -43,15, -105,-35, -27,-35, }
+-- sets the fill colour of the octagon
+octa:setFillColor(gradientOcta)
+
+-- Octagon border
+octa.strokeWidth = 3
+octa:setStrokeColor(1)
+
+-- Display "Triangle" on screen
+textObjectTriangle = display.newText("Triangle",500, 100, nil, 125)
+
+-- Display "Trapezoid" on screen
+textObjectTz = display.newText("Trapezoid", 400, 350, nil, 125)
+
+-- Display "Octagon" on screen
+textObjectOcta = display.newText("Octagon", 500, 600, nil, 125)
