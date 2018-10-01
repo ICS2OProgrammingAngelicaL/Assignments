@@ -37,6 +37,16 @@ local gradientOcta = {
     color2={ 229/255, 204/255, 255/255 }, 
     direction="down"
 }
+--
+local verticesRh = { 0,0, -50,0, -25,25, 25,25}
+local rhombus = display.newPolygon( 900, 700, verticesRh )
+local textObjectRh
+local gradientRh = {
+    type="gradient",
+    color1={ 255/255, 175/255, 102/255 }, 
+    color2={ 255/255, 229/255, 204/255 }, 
+    direction="down"
+}
 ----------------------------------------------------------------------------------------
 -- Sets the background colour of the screen
 display.setDefault("background",102/255, 0/255, 0/255)
@@ -58,12 +68,19 @@ trapezoid:setFillColor(gradientTz)
 trapezoid.strokeWidth = 3
 trapezoid:setStrokeColor(1)
 
--- sets the fill colour of the octagon
+-- Sets the fill colour of the octagon
 octa:setFillColor(gradientOcta)
 
 -- Octagon border
 octa.strokeWidth = 3
 octa:setStrokeColor(1)
+
+--Rhombus Border
+rhombus.strokeWidth = 3
+rhombus:setStrokeColor(1)
+
+-- Sets the fill colour of the rhombus
+rhombus:setFillColor(gradientRh)
 
 -- Display "Triangle" on screen
 textObjectTriangle = display.newText("Triangle",500, 100, nil, 125)
@@ -73,3 +90,6 @@ textObjectTz = display.newText("Trapezoid", 400, 350, nil, 125)
 
 -- Display "Octagon" on screen
 textObjectOcta = display.newText("Octagon", 500, 600, nil, 125)
+
+-- Display "(mini)Rhombus" on screen
+textObjectRh = display.newText("(mini)Rhombus", 775, 700, nil, 25)
