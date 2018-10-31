@@ -77,7 +77,7 @@ heart3.x = display.contentWidth *5/8
 heart3.y = display.contentHeight *1/7
 heart3.isVisible = true
 
-gameOver = display.newImageRect("Images/gameOver.jpg",1200,900)
+gameOver = display.newImageRect("Images/gameOver.jpg",display.contentWidth,display.contentHeight)
 gameOver.x = display.contentWidth/2
 gameOver.y = display.contentHeight/2
 gameOver.isVisible = false
@@ -142,27 +142,37 @@ end
 
 local function AskQuestion()
 	-- Generate 2 random numbers between a max. and a min. number
-	randomNumberSA1 = math.random(10,20)
-	randomNumberSA2 = math.random(10,20)
+	randomNumberSAD1 = math.random(10,20)
+	randomNumberSAD2 = math.random(10,20)
 	randomNumberM1 = math.random(0,10)
 	randomNumberM2 = math.random(1,10)
-	randomOperator = math.random(1,3)
+	randomOperator = math.random(4,4)
 
-	if (randomOperator == 1) then
-		correctAnswer = randomNumberSA1 + randomNumberSA2
+	if (randomOperator == 1) then -- Addition
+		correctAnswer = randomNumberSAD1 + randomNumberSAD2
 	-- Create the question in text object
-		questionObject.text = randomNumberSA1 .. "+" .. randomNumberSA2 .. "="
+		questionObject.text = randomNumberSAD1 .. "+" .. randomNumberSAD2 .. "="
 
-	elseif (randomOperator == 2) then
-		if (randomNumberSA2 > randomNumberSA1) then
-			correctAnswer = randomNumberSA1 - randomNumberSA2
-		else
-			correctAnswer = randomNumberSA2 - randomNumberSA1
+	elseif (randomOperator == 2) then -- Subtraction
+		if (randomNumberSAD2 < randomNumberSAD1) then
+			correctAnswer = randomNumberSAD1 - randomNumberSAD2
 		end
-		questionObject.text = randomNumberSA1 .. "-" .. randomNumberSA2 .. "="
-	else -- (randomOperator == 3)
+
+		questionObject.text = randomNumberSAD1 .. "-" .. randomNumberSAD2 .. "="
+
+	elseif (randomOperator == 3) then -- Multiplication
 		correctAnswer = randomNumberM1 * randomNumberM2
 		questionObject.text = randomNumberM1 .. "x" .. randomNumberM2 .. "="
+
+	else --(randomOperator == 4) then -- Division
+		correctAnswer = randomNumberSAD1 / randomNumberSAD2
+		math.round( correctAnswer )
+		
+			if (randomNumberSAD2 > randomNumberSAD1 ) then
+				correctAnswer = randomNumberSAD1 / randomNumberSAD2
+			end
+
+		questionObject.text = randomNumberSAD1 .. "÷" .. randomNumberSAD2 .. "="
 	end
 
 end
