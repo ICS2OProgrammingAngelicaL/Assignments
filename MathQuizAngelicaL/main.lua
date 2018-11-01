@@ -57,7 +57,7 @@ clockText:setTextColor(1)
 
 -- Create numeric field
 numericField = native.newTextField( display.contentWidth/2, display.contentHeight *2.5/3, 800, 80 )
-numericField.inputType = "number"
+numericField.inputType = "number , decimal"
 
 correctTally = display.newText("", display.contentWidth/6, display.contentHeight/6, nil, 50) 
 
@@ -77,14 +77,27 @@ heart3.x = display.contentWidth *5/8
 heart3.y = display.contentHeight *1/7
 heart3.isVisible = true
 
+-- Game over screen
 gameOver = display.newImageRect("Images/gameOver.jpg",display.contentWidth,display.contentHeight)
 gameOver.x = display.contentWidth/2
 gameOver.y = display.contentHeight/2
 gameOver.isVisible = false
 
+-- Win screen
+winScreen = display.newImageRect("Images/winner.jpg",display.contentWidth,display.contentHeight)
+winScreen.x = display.contentWidth/2
+winScreen.y = display.contentHeight/2
+winScreen.isVisible = false
+
 -----------------------------------------------------------------------------------------
 -- Local functions
 -----------------------------------------------------------------------------------------
+
+local function Winner()
+	if (tally == 5) then
+		winScreen.isVisible = true
+	end
+end
 
 local function UpdateHearts()
 
@@ -146,33 +159,36 @@ local function AskQuestion()
 	randomNumberSAD2 = math.random(10,20)
 	randomNumberM1 = math.random(0,10)
 	randomNumberM2 = math.random(1,10)
-	randomOperator = math.random(4,4)
+	randomOperator = math.random(1,4)
 
 	if (randomOperator == 1) then -- Addition
 		correctAnswer = randomNumberSAD1 + randomNumberSAD2
-	-- Create the question in text object
+			-- Create the question in text object
 		questionObject.text = randomNumberSAD1 .. "+" .. randomNumberSAD2 .. "="
 
-	elseif (randomOperator == 2) then -- Subtraction
-		if (randomNumberSAD2 < randomNumberSAD1) then
-			correctAnswer = randomNumberSAD1 - randomNumberSAD2
-		end
+	elseif (randomOperator == 2) then -- Subtraction(one minor problem)
 
-		questionObject.text = randomNumberSAD1 .. "-" .. randomNumberSAD2 .. "="
+			correctAnswer = randomNumberSAD1 - randomNumberSAD2
+
+		if (randomNumberSAD1 < randomNumberSAD2) then
+			correctAnswer = randomNumberSAD2 - randomNumberSAD1
+
+		else
+			questionObject.text = randomNumberSAD1 .. "-" .. randomNumberSAD2 .. "="
+		end
 
 	elseif (randomOperator == 3) then -- Multiplication
 		correctAnswer = randomNumberM1 * randomNumberM2
 		questionObject.text = randomNumberM1 .. "x" .. randomNumberM2 .. "="
 
-	else --(randomOperator == 4) then -- Division
+	else --(randomOperator == 4) then -- Division (A few problems)
 		correctAnswer = randomNumberSAD1 / randomNumberSAD2
-		math.round( correctAnswer )
 		
 			if (randomNumberSAD2 > randomNumberSAD1 ) then
-				correctAnswer = randomNumberSAD1 / randomNumberSAD2
+				correctAnswer = randomNumberSAD2 / randomNumberSAD1
 			end
 
-		questionObject.text = randomNumberSAD1 .. "÷" .. randomNumberSAD2 .. "="
+		questionObject.text = randomNumberSAD2 .. "÷" .. randomNumberSAD1 .. "="
 	end
 
 end
@@ -203,7 +219,9 @@ local function NumericFieldListener( event )
 			timer.performWithDelay(1500, HideCorrect)
 			tally = tally + 1
 			correctTally.text = ("Correct: ".. tally)
-			secondsLeft = 13
+			secondsLeft = 11
+			AskQuestion()
+			Winner()
 
 		else
 
@@ -212,7 +230,8 @@ local function NumericFieldListener( event )
 			timer.performWithDelay(1500, HideCorrect)
 			lives = lives - 1
 			UpdateHearts()
-			secondsLeft = 13
+			secondsLeft = 11
+			AskQuestion()
 		end
 
 		-- Clear text field
