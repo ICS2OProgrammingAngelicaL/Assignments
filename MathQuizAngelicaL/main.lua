@@ -33,6 +33,8 @@ local heart4
 local lives = 3	
 local secondsLeft = 11
 local totalSeconds = 11
+local subTemp
+local divTemp
 
 -----------------------------------------------------------------------------------------
 -- Object creation
@@ -159,6 +161,8 @@ local function AskQuestion()
 	randomNumberSAD2 = math.random(10,20)
 	randomNumberM1 = math.random(0,10)
 	randomNumberM2 = math.random(1,10)
+	randomNumberD1 = math.random(1,100)
+	randomNumberD2 = math.random(1,100)
 	randomOperator = math.random(1,4)
 
 	if (randomOperator == 1) then -- Addition
@@ -168,12 +172,15 @@ local function AskQuestion()
 
 	elseif (randomOperator == 2) then -- Subtraction(one minor problem)
 
-			correctAnswer = randomNumberSAD1 - randomNumberSAD2
-
 		if (randomNumberSAD1 < randomNumberSAD2) then
-			correctAnswer = randomNumberSAD2 - randomNumberSAD1
+			subTemp = randomNumberSAD1
+			randomNumberSAD1 = randomNumberSAD2
+			randomNumberSAD2 = subTemp
+			correctAnswer = randomNumberSAD1 - randomNumberSAD2
+			questionObject.text = randomNumberSAD1 .. "-" .. randomNumberSAD2 .. "="
 
 		else
+			correctAnswer = randomNumberSAD1 - randomNumberSAD2
 			questionObject.text = randomNumberSAD1 .. "-" .. randomNumberSAD2 .. "="
 		end
 
@@ -182,13 +189,10 @@ local function AskQuestion()
 		questionObject.text = randomNumberM1 .. "x" .. randomNumberM2 .. "="
 
 	else --(randomOperator == 4) then -- Division (A few problems)
-		correctAnswer = randomNumberSAD1 / randomNumberSAD2
-		
-			if (randomNumberSAD2 > randomNumberSAD1 ) then
-				correctAnswer = randomNumberSAD2 / randomNumberSAD1
-			end
+		divTemp = randomNumberD1*randomNumberD2
 
-		questionObject.text = randomNumberSAD2 .. "÷" .. randomNumberSAD1 .. "="
+		
+		
 	end
 
 end
