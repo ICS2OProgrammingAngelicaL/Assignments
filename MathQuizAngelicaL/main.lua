@@ -34,8 +34,23 @@ local lives = 3
 local secondsLeft = 11
 local totalSeconds = 11
 local subTemp
-local divTemp
+local factTemp
 
+-----------------------------------------------------------------------------------------
+-- Sound
+-----------------------------------------------------------------------------------------
+	-- Incorrect Answer
+local incorrectSound = audio.loadSound("Sounds/incorrect.mp3")
+local incorrectSoundChannel
+	-- Correct Answer
+local correctSound = audio.loadSound("Sounds/correct.mp3")
+local corectChannel
+	-- Game Over Screen
+local overMusic = audio.loadSound("Sounds/gameOverMusic.mp3")
+local overMusicChannel
+	-- Win Screen
+local winMusic = audio.loadSound("Sounds/winMusic.mp3")
+local winMusicChannel
 -----------------------------------------------------------------------------------------
 -- Object creation
 -----------------------------------------------------------------------------------------
@@ -59,7 +74,7 @@ clockText:setTextColor(1)
 
 -- Create numeric field
 numericField = native.newTextField( display.contentWidth/2, display.contentHeight *2.5/3, 800, 80 )
-numericField.inputType = "number , decimal"
+numericField.inputType = "number"
 
 correctTally = display.newText("", display.contentWidth/6, display.contentHeight/6, nil, 50) 
 
@@ -98,6 +113,7 @@ winScreen.isVisible = false
 local function Winner()
 	if (tally == 5) then
 		winScreen.isVisible = true
+		winMusicChannel = audio.play(winMusic) 
 	end
 end
 
@@ -123,6 +139,7 @@ local function UpdateHearts()
 		heart2.isVisible = false
 		heart3.isVisible = false
 		gameOver.isVisible = true
+		overMusicChannel = audio.play(overMusic) 
 	end
 end
 -----------------------------------------------------------------------------------------
@@ -161,16 +178,19 @@ local function AskQuestion()
 	randomNumberSAD2 = math.random(10,20)
 	randomNumberM1 = math.random(0,10)
 	randomNumberM2 = math.random(1,10)
-	randomNumberD1 = math.random(1,100)
-	randomNumberD2 = math.random(1,100)
-	randomOperator = math.random(1,4)
+	randomNumberD1 = math.random(1,10)
+	randomNumberD2 = math.random(1,10)
+	randomNumberB = math.random(1,6)   
+	randomNumberE = math.random(1,3)
+	randomNumberF = math.random(1,5)
+	randomOperator = math.random(1,7)
 
 	if (randomOperator == 1) then -- Addition
 		correctAnswer = randomNumberSAD1 + randomNumberSAD2
 			-- Create the question in text object
 		questionObject.text = randomNumberSAD1 .. "+" .. randomNumberSAD2 .. "="
 
-	elseif (randomOperator == 2) then -- Subtraction(one minor problem)
+	elseif (randomOperator == 2) then -- Subtraction
 
 		if (randomNumberSAD1 < randomNumberSAD2) then
 			subTemp = randomNumberSAD1
@@ -186,20 +206,45 @@ local function AskQuestion()
 
 	elseif (randomOperator == 3) then -- Multiplication
 		correctAnswer = randomNumberM1 * randomNumberM2
-		questionObject.text = randomNumberM1 .. "x" .. randomNumberM2 .. "="
+		questionObject.text = randomNumberM1 .. "*" .. randomNumberM2 .. "="
 
-	else --(randomOperator == 4) then -- Division (A few problems)
-		divTemp = randomNumberD1*randomNumberD2
+	elseif (randomOperator == 4) then -- Division
+		correctAnswer = randomNumberD1
+		-- Create the question for division
+		questionObject.text = randomNumberD1*randomNumberD2 .. "÷" .. randomNumberD2 .. "="	
 
+	elseif (randomOperator == 5) then -- Square root ; use division range D1
+		correctAnswer = randomNumberD1
+		-- Create the question for square root
+		questionObject.text = "√".. randomNumberD1^2 .. "="	
 		
-		
+	elseif (randomOperator == 6) then -- exponent
+		correctAnswer = randomNumberB^randomNumberE
+		-- Create the question for exponent
+		questionObject.text = randomNumberB .. "^" .. randomNumberE .. "="		
+
+	else -- (randomOperator == 7) then -- factorial
+		-- Start at 1
+		factTemp = 1
+		-- Set the correctAnswer to 1 (1!)
+		correctAnswer = 1
+		-- Multiply consecutive integers from 1 to randomNumberF
+		while (factTemp <= randomNumberF) do
+
+			correctAnswer = correctAnswer * factTemp
+			-- Increment temporary variable
+			factTemp = factTemp + 1
+		end
+		-- Create the question for factorials
+		questionObject.text = randomNumberF.. "! ="	
+
+
 	end
 
 end
 
 local function HideCorrect()
 	correctObject.isVisible = false
-	AskQuestion()
 	incorrect.isVisible = false
 end
 
@@ -220,6 +265,7 @@ local function NumericFieldListener( event )
 		-- If the users answer and the correct amswer are the same
 		if ( userAnswer == correctAnswer ) then
 			correctObject.isVisible = true
+			correctSoundChannel = audio.play(correctSound) 
 			timer.performWithDelay(1500, HideCorrect)
 			tally = tally + 1
 			correctTally.text = ("Correct: ".. tally)
@@ -231,6 +277,7 @@ local function NumericFieldListener( event )
 
 			correctObject.isVisible = false
 			incorrect.isVisible = true
+			incorrectSoundChannel = audio.play(incorrectSound) 
 			timer.performWithDelay(1500, HideCorrect)
 			lives = lives - 1
 			UpdateHearts()
