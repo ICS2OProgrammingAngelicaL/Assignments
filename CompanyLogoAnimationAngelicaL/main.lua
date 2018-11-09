@@ -14,7 +14,7 @@ display.setDefault("background", 154/255, 153/255, 255/255)
 -----------------------------------------------------------------------------------------
 -- Local Variables
 -----------------------------------------------------------------------------------------
-local banana = display.newImageRect("Images/CompanyLogoAngelica@2xCopy.png", 250, 250)
+local banana = display.newImageRect("Images/CompanyLogoAngelica@2xCopy.png", display.contentWidth/5, display.contentHeight/5 + display.contentHeight/14)
 local bananaWidth = banana.width
 local bananaHeight = banana.height
 banana.x = display.contentWidth *2/4
