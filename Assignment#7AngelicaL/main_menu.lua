@@ -32,7 +32,6 @@ local scene = composer.newScene( sceneName )
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
-local bkg_image
 local playButton
 local creditsButton
 local helpButton
@@ -71,20 +70,7 @@ function scene:create( event )
     -----------------------------------------------------------------------------------------
     -- BACKGROUND IMAGE & STATIC OBJECTS
     -----------------------------------------------------------------------------------------
-
-    -- Insert the background image and set it to the center of the screen
-    bkg_image = display.newImage("Images/main_menu.png")
-    bkg_image.x = display.contentCenterX
-    bkg_image.y = display.contentCenterY
-    bkg_image.width = display.contentWidth
-    bkg_image.height = display.contentHeight
-
-
-    -- Associating display objects with this scene 
-    sceneGroup:insert( bkg_image )
-
-    -- Send the background image to the back layer so all other objects can be on top
-    bkg_image:toBack()
+    display.setDefault("background", 153/255, 255/255, 153/255)
 
     -----------------------------------------------------------------------------------------
     -- BUTTON WIDGETS
@@ -95,9 +81,9 @@ function scene:create( event )
         {   
             -- Set its position on the screen relative to the screen size
             x = display.contentWidth/2,
-            y = display.contentHeight*10/13,
-            width = display.contentWidth/4,
-            height = display.contentHeight/3,
+            y = display.contentHeight/2,
+            width = display.contentWidth*2/4,
+            height = display.contentHeight*4/7,
 
             -- Insert the images here
             defaultFile = "Images/PlayButtonUnpressed@2x.png",

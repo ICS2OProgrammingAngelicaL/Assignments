@@ -28,6 +28,7 @@ local banana
 local Jojo
 local scrollSpeed = 6
 local stop = 0
+local bkg 
 
 --------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -71,7 +72,14 @@ function scene:create( event )
     local sceneGroup = self.view
 
     -- set the background to be black
-    display.setDefault("background", 154/255, 153/255, 255/255)
+    bkg_image = display.newImage("Images/CompanyBackground.AngelicaCopy.png")
+    bkg_image.x = display.contentCenterX
+    bkg_image.y = display.contentCenterY
+    bkg_image.width = display.contentWidth
+    bkg_image.height = display.contentHeight
+
+    -- Send the background image to the back layer so all other objects can be on top
+    bkg_image:toBack()
 
 
     -- Insert the banana image
@@ -93,6 +101,7 @@ function scene:create( event )
     Jojo.alpha = 0
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( bkg_image )
     sceneGroup:insert( banana )
     sceneGroup:insert( Jojo )
 
@@ -181,8 +190,6 @@ scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
---Runtime:addEventListener("enterFrame", MoveBanana)
---Runtime:addEventListener("enterFrame", FadeInName)
 
 -----------------------------------------------------------------------------------------
 
